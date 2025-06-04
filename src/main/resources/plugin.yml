@@ -1,7 +1,7 @@
 name: ThirstBar
 version: '${project.version}'
 main: me.orineko.thirstbar.ThirstBar
-api-version: 1.13
+api-version: 1.20.6
 softdepend: [PlaceholderAPI, ProtocolLib, WorldGuard]
 commands:
   ThisrtBar:

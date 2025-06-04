@@ -1,6 +1,5 @@
 package me.orineko.thirstbar.manager.player;
 
-import com.cryptomorin.xseries.messages.ActionBar;
 import lombok.Getter;
 import lombok.Setter;
 import me.orineko.thirstbar.ThirstBar;
@@ -288,12 +287,13 @@ public class PlayerData extends PlayerSetting implements PlayerThirstValue, Play
                 idRepeat2ActionBar = 0;
             }
             if(!isEnableActionBar()) return;
-            ActionBar.sendActionBar(ThirstBar.getInstance(), player, getTitleActionBar(), thirstTimeRemain);
+
+            me.orineko.xseries.messages.ActionBar.sendActionBar(ThirstBar.getInstance(), player, getTitleActionBar(), thirstTimeRemain);
             if ((int) thirstTime / 20 == 0) return;
             idDelayActionBar = Bukkit.getScheduler().scheduleSyncDelayedTask(ThirstBar.getInstance(), () -> {
                 idRepeat2ActionBar = Bukkit.getScheduler().scheduleSyncRepeatingTask(ThirstBar.getInstance(), () -> {
                     if(!isEnableActionBar()) return;
-                    ActionBar.sendActionBar(ThirstBar.getInstance(), player, getTitleActionBar(), 20);
+                    me.orineko.xseries.messages.ActionBar.sendActionBar(ThirstBar.getInstance(), player, getTitleActionBar(), 20);
                 }, 0, 20);
             }, thirstTimeRemain);
         }, 0, thirstTime);
@@ -415,13 +415,14 @@ public class PlayerData extends PlayerSetting implements PlayerThirstValue, Play
     }
 
     public void createArmorStand(@Nonnull Player player){
-        if(getArmorStandFrontPlayer()!= null) return;
-        Location location = new Location(player.getWorld(), 0, 255, 0);
-        if(!location.getChunk().isLoaded()) location.getChunk().load();
-        ArmorStand armorStand = player.getWorld().spawn(location, ArmorStand.class);
-        armorStand.setVisible(false);
-        armorStand.setGravity(false);
-        setArmorStandFrontPlayer(armorStand);
+//        if(getArmorStandFrontPlayer()!= null) return;
+//        Location location = new Location(player.getWorld(), 0, 255, 0);
+//        if(!location.getChunk().isLoaded()) location.getChunk().load();
+//        ArmorStand armorStand = player.getWorld().spawn(location, ArmorStand.class);
+//        armorStand.setVisible(false);
+//        armorStand.setGravity(false);
+//        setArmorStandFrontPlayer(armorStand);
+        return;
     }
 
 }

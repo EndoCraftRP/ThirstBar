@@ -31,7 +31,6 @@ import java.util.*;
 
 public class ThirstListener implements Listener {
 
-//    public static final HashMap<UUID, ArmorStand> armorStandMap = new HashMap<>();
     private final List<UUID> delayClickMap = new ArrayList<>();
     private final List<UUID> delayMoveMap = new ArrayList<>();
     private final String keyPotionRaw = "RawWater";
@@ -167,52 +166,6 @@ public class ThirstListener implements Listener {
 
         playerData.updateAll(player);
     }
-/*
-
-    @EventHandler
-    public void onPlayerSneak(PlayerToggleSneakEvent e) {
-        Player player = e.getPlayer();
-        new Thread(() -> {
-            PlayerData playerData = ThirstBar.getInstance().getPlayerDataList().addData(player.getName());
-            if(playerData.isDisableAll() || playerData.isDisable()) return;
-            ItemStack itemHand = player.getItemInHand();
-            Location location = player.getEyeLocation().clone();
-            Vector vector = location.getDirection();
-            final ArmorStand[] armorStand = {armorStandMap.getOrDefault(player.getUniqueId(), null)};
-            if (armorStand[0] != null && (!e.isSneaking() || !itemHand.getType().equals(Material.AIR))) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(ThirstBar.getInstance(), () -> armorStand[0].remove());
-                armorStandMap.remove(player.getUniqueId());
-                return;
-            }
-            if (!e.isSneaking() || !itemHand.getType().equals(Material.AIR)) return;
-            Location locationCal = player.getEyeLocation().clone();
-            boolean hasBlock = false;
-            for (int i = 1; i <= 4; i++) {
-                locationCal.add(vector.getX(), vector.getY(), vector.getZ());
-                if (locationCal.getBlock().getType().equals(Material.AIR) ||
-                        locationCal.getBlock().getType().equals(Material.WATER) ||
-                        locationCal.getBlock().getType().name().equals("STATIONARY_WATER")) continue;
-                hasBlock = true;
-                break;
-            }
-            if (armorStand[0] == null && !hasBlock) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(ThirstBar.getInstance(), () -> {
-                    armorStand[0] = player.getWorld().spawn(location, ArmorStand.class);
-                    armorStand[0].setVisible(false);
-                    armorStandMap.put(player.getUniqueId(), armorStand[0]);
-                });
-            }
-            if (armorStand[0] != null && hasBlock) {
-                armorStand[0].remove();
-                armorStandMap.remove(player.getUniqueId());
-                armorStand[0] = null;
-            }
-            if (armorStand[0] == null) return;
-            armorStand[0].setVisible(false);
-            armorStand[0].setGravity(false);
-        }).start();
-    }
-*/
 
     @SuppressWarnings("deprecation")
     @EventHandler
@@ -426,7 +379,7 @@ public class ThirstListener implements Listener {
                         if (meta != null) {
                             meta.setDisplayName(ConfigData.NAME_RAW_POTION);
                             meta.setLore(ConfigData.LORE_RAW_POTION);
-                            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+                            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ATTRIBUTES);
                             itemBottle.setItemMeta(meta);
                         }
 

@@ -21,20 +21,16 @@ import me.orineko.thirstbar.manager.player.PlayerData;
 import me.orineko.thirstbar.manager.player.PlayerDataList;
 import me.orineko.thirstbar.manager.stage.StageList;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionType;
 
 import javax.annotation.Nullable;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,9 +102,6 @@ public final class ThirstBar extends JavaPlugin {
 
         ItemStack bottle = new ItemStack(Material.POTION, 1);
         ItemMeta meta = bottle.getItemMeta();
-        PotionMeta pmeta = (PotionMeta) meta;
-        PotionData pdata = new PotionData(PotionType.WATER);
-        if(pmeta != null) pmeta.setBasePotionData(pdata);
         bottle.setItemMeta(meta);
         ItemStack potionRawItem = MethodDefault.getItemAllVersion("POTION");
         FurnaceRecipe furnaceRecipe;
@@ -133,10 +126,14 @@ public final class ThirstBar extends JavaPlugin {
             itemsFile.reloadWithoutCreateFile();
             playersFile.reloadWithoutCreateFile();
         }
-        messageFile.reload();
-        stageFile.reload();
-        actionsFile.reload();
-        configData = new ConfigData();
+		try {
+            messageFile.reload();
+            stageFile.reload();
+			actionsFile.reload();
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+		configData = new ConfigData();
         messageData = new MessageData();
         itemDataList = new ItemDataList();
         itemDataList.loadData();
