@@ -39,20 +39,24 @@ public class ThirstListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         PlayerData playerData = ThirstBar.getInstance().getPlayerDataList().addData(player);
-        if (ThirstBar.getInstance().getSqlManager().getConnection() == null) {
-            double thirstFile = ThirstBar.getInstance().getPlayersFile()
-                    .getDouble(playerData.getName() + ".Thirst", -1);
-            if (thirstFile >= 0) {
+
+        Bukkit.getScheduler().runTaskAsynchronously(ThirstBar.getInstance(), () -> {
+            if (ThirstBar.getInstance().getSqlManager().getConnection() == null) {
+                double thirstFile = ThirstBar.getInstance().getPlayersFile()
+                        .getDouble(playerData.getName() + ".Thirst", -1);
+                if (thirstFile >= 0) {
+                    playerData.setThirst(thirstFile);
+                    ThirstBar.getInstance().getPlayersFile().setAndSave(playerData.getName() + ".Thirst", null);
+                }
+            } else {
+                double thirstFile = ThirstBar.getInstance().getSqlManager().runGetThirstCurrentPlayer(playerData.getName());
+                if (thirstFile < 0) {
+                    thirstFile = ConfigData.THIRSTY_MAX;
+                }
                 playerData.setThirst(thirstFile);
-                ThirstBar.getInstance().getPlayersFile().setAndSave(playerData.getName() + ".Thirst", null);
+                ThirstBar.getInstance().getSqlManager().runSetThirstPlayer(playerData.getName(), playerData.getThirst());
             }
-        } else {
-            double thirstFile = ThirstBar.getInstance().getSqlManager().runGetThirstCurrentPlayer(playerData.getName());
-            if (thirstFile >= 0) {
-                playerData.setThirst(thirstFile);
-                ThirstBar.getInstance().getSqlManager().runSetThirstPlayer(playerData.getName(), -1);
-            }
-        }
+        });
 
         playerData.showBossBar(player);
         boolean check1 = false;
